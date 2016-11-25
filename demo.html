@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Draw2D | Demo</title>
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="viewport" content="width=device-width, minimum-scale=1.0" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<link type="text/css" rel="stylesheet" href="css/example.css" />
+    <link type="text/css" rel="stylesheet" href="css/contextmenu.css" />
+
+	<script type="text/javascript" src="js/shifty.js"></script>
+	<script type="text/javascript" src="js/raphael.js"></script>
+	<script type="text/javascript" src="js/jquery-1.12.0.min.js"></script>
+  	<script type="text/javascript" src="js/jquery.autoresize.js"></script>
+  	<script type="text/javascript" src="js/jquery-touch_punch.js"></script>
+  	<script type="text/javascript" src="js/jquery.contextmenu.js"></script>
+  	<script type="text/javascript" src="js/rgbcolor.js"></script>
+  	<script type="text/javascript" src="js/canvg.js"></script>
+  	<script type="text/javascript" src="js/Class.js"></script>
+  	<script type="text/javascript" src="js/json2.js"></script>
+  	<script type="text/javascript" src="js/pathfinding-browser.min.js"></script>
+	<script type="text/javascript" src="js/draw2d.js"></script>
+	<script type="text/javascript" src="js/demojs/jquery.browser.js"></script>
+	<script type="text/javascript" src="js/demojs/jquery-ui-1.8.23.custom.min.js"></script>
+	<script type="text/javascript" src="js/demojs/jquery.layout.js"></script>
+	<script type="text/javascript" src="js/demojs/Application.js"></script>
+	<script type="text/javascript" src="js/demojs/View.js"></script>
+	<script type="text/javascript" src="js/demojs/Toolbar.js"></script>
+	<script type="text/javascript" src="js/demojs/HoverConnection.js"></script>
+
+	<script type="text/javascript">
+
+		/*var jsonDocument = 
+		    [
+		      {
+		        "type": "draw2d.shape.basic.Rectangle",
+		        "id": "5b4c74b0-96d1-1aa3-7eca-bbeaed5fffd7",
+		        //"cssClass": "draw2d_droppable",
+		        //"data-shape": "draw2d.shape.basic.Rectangle",
+		        //"userData": {"data-shape": "draw2d.shape.basic.Rectangle"},
+		        "x": 50,
+		        "y": 50,
+		        "width": 93,
+		        "height": 38,
+		        "bgColor": [255,255,0]
+		      },
+		     
+		      {
+		        "type": "draw2d.shape.node.Start",
+		        "id": "ebfb35bb-5767-8155-c804-14bda7759dc2",
+		        "cssClass": "draw2d_droppable",
+		        //"data-shape": "draw2d.shape.node.Start",
+		        "x": 50,
+		        "y": 150
+		       
+		      }
+
+		     ];*/
+
+
+		
+		$(window).load(function () {
+
+			//var canvasTool = new draw2d.Canvas("myCanvsFirst");
+			//var canvasMain = new draw2d.Canvas("canvas");
+
+			//var reader = new draw2d.io.json.Reader();
+			//reader.unmarshal(canvasTool, jsonDocument);
+
+			  //displayJSON(canvasTool);
+
+			     
+				  // add an event listener to the Canvas for change notifications.
+				  // We just dump the current canvas document into the DIV
+				  //
+				  /*canvasTool.getCommandStack().addEventListener(function(e){ 
+				      if(e.isPostChangeEvent()){
+				          displayJSON(canvasTool);
+				      }
+				  });*/
+
+
+
+		    draw2d.Configuration.factory.createConnection = function(sourcePort, targetPort, callback, dropTarget){	
+		    	return new HoverConnection(sourcePort, targetPort);
+		    };
+
+		    var app  = new example.Application();
+		});
+
+
+		function displayJSON(canvas){	console.log('Display Json....');
+
+				var writer = new draw2d.io.json.Writer();
+			    writer.marshal(canvas,function(json){	
+					writeObjectIntoFile(JSON.stringify(json, null, 2));
+			    	$("#json").text(JSON.stringify(json, null, 2));
+			    });
+			}
+
+
+			function writeObjectIntoFile(jsonObject) {
+
+				// write to file
+				var txtFile = "/var/javascript-vp/RIOT/temp/test.txt";
+				var file = new File([""], txtFile);
+
+				console.log(file);
+
+				//var file = new File([""], txtFile);
+				//var file = new File([""],txtFile);
+				//var str = "My string of text";
+
+				file.open(); // open file with write access
+				//file.writeln("First line of text");
+				//file.writeln("Second line of text " + str);
+				file.writeline(jsonObject);
+				file.close();
+			}
+
+
+	</script>
+	
+</head>
+<body id="container">	
+
+	
+
+
+	<!-- <div style="width:100%; white-space:nowrap;"> -->
+
+	<!-- <span id="navigation" style="display: inline-block; vertical-align: top; padding: 5px; width:100px">
+      <div id="myCanvsFirst" data-shape="draw2d.shape.basic.Rectangle" class="draw2d_droppable" style="border: solid 1px gray; height: 320px">
+      </div>
+    </span>	 -->
+
+
+
+    <span id="navigation" style="display: inline-block; vertical-align: top; padding: 5px; width:100px">
+    <div id="myCanvsFirst" ></div>
+       <div data-shape="draw2d.shape.node.Start" class="draw2d_droppable">Start Node</div>
+      <div data-shape="draw2d.shape.node.End"    class="draw2d_droppable">End Node </div>
+      <div data-shape="draw2d.shape.node.Between" class="draw2d_droppable">Between</div>
+      <div data-shape="draw2d.shape.basic.Rectangle" class="draw2d_droppable">Rectangle</div> 
+	</span> 
+
+    <span id="content" style="display: inline-block; vertical-align: top; padding: 5px; width:80%">
+    <div id="toolbar"></div>
+     <div onselectstart="javascript:/*IE8 hack*/return false" id="canvas" style="border: solid 1px gray; height: 350px">
+	 </div>
+	</span>
+ 	<!-- </div> -->
+
+ 	<div id="json" style="overflow-y:auto;position:absolute; top:150px; right:10px; width:350; height:500;background:white;border:1px solid gray">
+	</div>
+
+   <!-- <div id="content">
+   		<div id="toolbar"></div>
+   		<div id="canvas" class="" style="width:1500px; height:1500px;"></div>
+   </div>
+   
+   <div id="navigation" class="">
+    	<div data-shape="draw2d.shape.node.Start"  class="palette_node_element draw2d_droppable">Start</div>
+    	<div data-shape="draw2d.shape.node.End"    class="palette_node_element draw2d_droppable">End</div>
+    	<div data-shape="draw2d.shape.node.Between" class="palette_node_element draw2d_droppable">Between</div>
+   </div> -->
+   
+</body>
+</html>
