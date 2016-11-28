@@ -58,7 +58,7 @@ example.PropertyPane = Class.extend({
         // simple x/y coordinate display
         //
         this.html.append(
-                '<div id="property_position_container" class="panel panel-default">'+
+                /*'<div id="property_position_container" class="panel panel-default">'+
                 ' <div class="panel-heading " >'+
                 '     Position'+
                 '</div>'+
@@ -71,16 +71,17 @@ example.PropertyPane = Class.extend({
                 '      height <input id="property_height" type="text" class="form-control"/>'+
                 '   </div>'+
                 ' </div>'+
-                '</div>'+
+                '</div>'+*/
                 
                 '<div id="property_position_container" class="panel panel-default">'+
                 ' <div class="panel-heading " >'+
-                '     Custom Property'+
+                //'     Custom Property'+
                 '</div>'+
                 ' <div class="panel-body" id="userdata_panel">'+
                 '   <div class="form-group">'+
                 '       <div class="input-group" ></div> '+ 
-                '       Value <input id="property_name" type="text" class="form-control" value="'+figure.getUserData().name+'"/>'+
+                // '       Value <input id="property_name" type="text" class="form-control" value="'+figure.getUserData().name+'"/>'+
+                '      Label <input id="property_component_lable" type="text" class="form-control"/>'+
                 '   </div>'+
                 ' </div>'+
                 '</div>');
@@ -94,20 +95,24 @@ example.PropertyPane = Class.extend({
     		$("#property_position_x").val(figure.getPosition().x);
             $("#property_position_y").val(figure.getPosition().y);
             $("#property_width").val(figure.getWidth());
-       		$("#property_height").val(figure.getHeight());
+            $("#property_height").val(figure.getHeight());
+       		
+            // For geeting text of component:
+            $("#property_component_lable").val(figure.label.text);
        		isInUpdate=false;
        	});
     	
     	// Databinding: UI --> Figure
         //
     	$("#position_panel input").on("change", function(){ 
-    	    // with undo/redo support
+    	    
+            // with undo/redo support
             // CommandMove is use only to calculate x and y axsis of the figure:
     	    var cmd = new draw2d.command.CommandMove(figure);
 
             // CommandResize is use to set the width and height of the figure:
             var cmdShapeResize = new draw2d.command.CommandResize(figure);
-            
+
             cmd.setPosition(parseInt($("#property_position_x").val()),parseInt($("#property_position_y").val()));
     	    cmdShapeResize.setDimension(parseInt($("#property_width").val()),parseInt($("#property_height").val()));
 
@@ -115,9 +120,21 @@ example.PropertyPane = Class.extend({
             figure.getCanvas().getCommandStack().execute(cmdShapeResize);
             
     	});
+
     	$("#property_name").on("change", function(){
-    		figure.getUserData().name=$("#property_name").val();
-    	});
+            figure.getUserData().name=$("#property_name").val();
+        });
+
+        $("#property_component_lable").on("change", function() { 
+
+            var currentComponentChangedLabelValue = $("#property_component_lable").val();
+           
+            figure.label.text = currentComponentChangedLabelValue;
+           
+            //add the new decoration to the connection with a position locator.
+            figure.add(figure.label, new draw2d.layout.locator.CenterLocator());
+
+        });
 
 	}
 });

@@ -11,16 +11,7 @@ example.View = draw2d.Canvas.extend({
         //console.log(this.canvasId);
 		
 		this.currentDropConnection = null;
-
-
-        //var reader = new draw2d.io.json.Reader();
-
-        /*this.getCommandStack().addEventListener(function(e){ console.log('Pathak');
-                      if(e.isPostChangeEvent()){
-                          displayJSON(this);
-                      }
-                  });*/
-	},
+    },
 
     /**
      * @method
@@ -56,51 +47,47 @@ example.View = draw2d.Canvas.extend({
      **/
     onDrop : function(droppedDomNode, x, y, shiftKey, ctrlKey)
     {   var jsonDocument = [];
-        //console.log(this.canvasId);
-        console.log(droppedDomNode);
-        //console.log(droppedDomNode[0].innerHTML);
+        
+        //console.log(droppedDomNode);
         var type = $(droppedDomNode).data("shape");
         var figure = eval("new "+type+"();");
         
-        //console.log(figure);
-
         //if(droppedDomNode[0].innerHTML == 'Rectangle') {
             figure.width = 120;
             figure.height = 80;
+            //figure.text = "Component One";
         //}
 
-        //console.log('Type=>'+type);
-        //console.log(figure);
+
+        // Create any Draw2D figure as decoration for the connection
+      //
+      figure.label = new draw2d.shape.basic.Label({text:"I'm a Label", color:"#0d0d0d", fontColor:"#0d0d0d"});
+      
+      // add the new decoration to the connection with a position locator.
+      //
+      figure.add(figure.label, new draw2d.layout.locator.CenterLocator(figure));
+      
+      figure.label.installEditor(new draw2d.ui.LabelInplaceEditor());
+
+
+        
         // create a command for the undo/redo support
         var command = new draw2d.command.CommandAdd(this, figure, x, y);
-        //console.log(command);
+        
         this.getCommandStack().execute(command);
-        //console.log('Goint to call displayJSON with canvas as:', this);
-        // displayJSON(this);
-
+        
        /*var reader = new draw2d.io.json.Reader();
         reader.unmarshal(this, jsonDocument); */
         //var currentCanvas = this;
-
-        //console.log(this);
 
         var myCanvas = this;
 
         myCanvas.getCommandStack().addEventListener(function(e){ 
                       if(e.isPostChangeEvent()){    
-                          //displayJSON(myCanvas);
+                          displayJSON(myCanvas);
                       }
                   });
         
     }
-
-/*
-        displayJSON: function(canvas){   console.log('Display Json....');
-                var writer = new draw2d.io.json.Writer();
-                writer.marshal(canvas,function(json){
-                    $("#json").text(JSON.stringify(json, null, 2));
-                });
-            }*/
-
 
 });
