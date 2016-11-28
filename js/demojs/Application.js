@@ -1,3 +1,8 @@
+/*
+	Comman Application.js for the both examples, one is for drag-drop example and other is for open right side property panel.
+	Both are refer from Draw2D.org site.
+*/
+
 // declare the namespace for this example
 var example = {};
 
@@ -21,6 +26,7 @@ example.Application = Class.extend(
     {
 	      this.view    = new example.View("canvas");
           this.toolbar = new example.Toolbar("toolbar",  this.view );
+          this.properties = new example.PropertyPane("properties", this.view);
 	       
 	       
 	       // layout FIRST the body

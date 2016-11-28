@@ -7,6 +7,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
 	<link type="text/css" rel="stylesheet" href="css/example.css" />
+	<!-- <link rel="stylesheet/less" type="text/css" href="css/styles.less" /> -->
     <link type="text/css" rel="stylesheet" href="css/contextmenu.css" />
 
 	<script type="text/javascript" src="js/shifty.js"></script>
@@ -24,9 +25,12 @@
 	<script type="text/javascript" src="js/demojs/jquery.browser.js"></script>
 	<script type="text/javascript" src="js/demojs/jquery-ui-1.8.23.custom.min.js"></script>
 	<script type="text/javascript" src="js/demojs/jquery.layout.js"></script>
+	<!-- <script type="text/javascript" src="js/demojs/less-1.7.5.min.js"></script> -->
 	<script type="text/javascript" src="js/demojs/Application.js"></script>
+	<script type="text/javascript" src="js/demojs/Canvas.js"></script>
 	<script type="text/javascript" src="js/demojs/View.js"></script>
 	<script type="text/javascript" src="js/demojs/Toolbar.js"></script>
+	<script type="text/javascript" src="js/demojs/PropertyPane.js"></script>
 	<script type="text/javascript" src="js/demojs/HoverConnection.js"></script>
 
 	<script type="text/javascript">
@@ -87,14 +91,15 @@
 		    };
 
 		    var app  = new example.Application();
+
 		});
 
 
-		function displayJSON(canvas){	console.log('Display Json....');
+		function displayJSON(canvas){	
 
 				var writer = new draw2d.io.json.Writer();
 			    writer.marshal(canvas,function(json){	
-					writeObjectIntoFile(JSON.stringify(json, null, 2));
+					//writeObjectIntoFile(JSON.stringify(json, null, 2));
 			    	$("#json").text(JSON.stringify(json, null, 2));
 			    });
 			}
@@ -102,8 +107,14 @@
 
 			function writeObjectIntoFile(jsonObject) {
 
+				var fso = new ActiveXObject("Scripting.FileSystemObject");
+            	var fh = fso.OpenTextFile("C:\\temp\data.txt", 8, true, 0);
+            	fh.WriteLine(jsonObject);
+            	fh.Close();
+
+
 				// write to file
-				var txtFile = "/var/javascript-vp/RIOT/temp/test.txt";
+				/*var txtFile = "/var/javascript-vp/RIOT/temp/test.txt";
 				var file = new File([""], txtFile);
 
 				console.log(file);
@@ -116,7 +127,7 @@
 				//file.writeln("First line of text");
 				//file.writeln("Second line of text " + str);
 				file.writeline(jsonObject);
-				file.close();
+				file.close();*/
 			}
 
 
@@ -125,7 +136,35 @@
 </head>
 <body id="container">	
 
-	
+	<div id="logo">Draw2D</div>
+   <div id="toolbar" class="navbar-default">
+   </div>
+   
+     <span id="navigation" style="display: inline-block; vertical-align: top; padding: 5px; width:100px">
+    <div id="myCanvsFirst" ></div>
+       <div data-shape="draw2d.shape.node.Start" class="draw2d_droppable">Start Node</div>
+      <div data-shape="draw2d.shape.node.End"    class="draw2d_droppable">End Node </div>
+      <div data-shape="draw2d.shape.node.Between" class="draw2d_droppable">Between</div>
+      <div data-shape="draw2d.shape.basic.Rectangle" class="draw2d_droppable">Rectangle</div> 
+	</span>
+
+
+		<div id="propertyPane" style="margin-left:650px;">
+     <div id="propertyHeader" class="highlight panetitle blackgradient">
+        Shape Properties
+     </div>
+     <div id="properties">
+     
+     </div>
+   </div>
+
+		
+		<div onselectstart="javascript:/*IE8 hack*/return false" id="canvas" style="border: solid 1px gray; height: 350px;display: inline-block; vertical-align: top; padding: 5px; width:70%">
+	 	</div>
+
+
+   <!-- <div id="canvas" >
+   </div> -->
 
 
 	<!-- <div style="width:100%; white-space:nowrap;"> -->
@@ -136,7 +175,14 @@
     </span>	 -->
 
 
+    <!-- <div id="propertyPane" style="margin-left:615px; margin-top:560px;" >
+     <div id="propertyHeader" class="highlight panetitle blackgradient">
+        Shape Properties
+     </div>
+     <div id="properties"></div>
+   </div>
 
+   
     <span id="navigation" style="display: inline-block; vertical-align: top; padding: 5px; width:100px">
     <div id="myCanvsFirst" ></div>
        <div data-shape="draw2d.shape.node.Start" class="draw2d_droppable">Start Node</div>
@@ -149,11 +195,15 @@
     <div id="toolbar"></div>
      <div onselectstart="javascript:/*IE8 hack*/return false" id="canvas" style="border: solid 1px gray; height: 350px">
 	 </div>
-	</span>
- 	<!-- </div> -->
+	</span> -->
+ 	
 
- 	<div id="json" style="overflow-y:auto;position:absolute; top:150px; right:10px; width:350; height:500;background:white;border:1px solid gray">
-	</div>
+
+
+
+
+ 	<!-- <div id="json" style="overflow-y:auto;position:absolute; top:150px; right:10px; width:350; height:500;background:white;border:1px solid gray">
+	</div> -->
 
    <!-- <div id="content">
    		<div id="toolbar"></div>

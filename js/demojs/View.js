@@ -88,7 +88,7 @@ example.View = draw2d.Canvas.extend({
 
         myCanvas.getCommandStack().addEventListener(function(e){ 
                       if(e.isPostChangeEvent()){    
-                          displayJSON(myCanvas);
+                          //displayJSON(myCanvas);
                       }
                   });
         

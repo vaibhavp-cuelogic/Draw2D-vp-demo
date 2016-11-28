@@ -1,3 +1,7 @@
+/*
+	Comman Toolbar.js for the both examples, one is for drag-drop example and other is for open right side property panel.
+	Both are refer from Draw2D.org site.
+*/
 
 example.Toolbar = Class.extend({
 	
@@ -70,5 +74,17 @@ example.Toolbar = Class.extend({
 	{
 		this.undoButton.button( "option", "disabled", !event.getStack().canUndo() );
 		this.redoButton.button( "option", "disabled", !event.getStack().canRedo() );
+	},
+
+	disableButton:function(button, flag)
+	{
+	   button.prop("disabled", flag);
+       if(flag){
+            button.addClass("disabled");
+        }
+        else{
+            button.removeClass("disabled");
+        }
 	}
+
 });
